@@ -64,7 +64,7 @@ public class WhatsappRepository {
     }
 
     public void setAdminMap(HashMap<Group, User> adminMap) {
-        this.adminMap = adminMap;
+        this.adminMap =adminMap;
     }
 
     public HashMap<String, User> getUserMap() {
@@ -120,6 +120,9 @@ public class WhatsappRepository {
     public Group createGroup(List<User> users) {
             this.customGroupCount++;
             String groupName="Group"+this.customGroupCount;
+            if(this.customGroupCount==1){
+                groupName="Group1";
+            }
             Group newGroup=new Group(groupName,users.size());
             this.groupUserMap.put(newGroup,users);
             this.adminMap.put(newGroup,users.get(0));
