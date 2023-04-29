@@ -2,7 +2,10 @@ package com.driver;
 
 import java.util.*;
 
+import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.stereotype.Repository;
+
+import javax.swing.text.html.Option;
 
 @Repository
 public class WhatsappRepository {
@@ -13,7 +16,10 @@ public class WhatsappRepository {
     private HashMap<Group, List<Message>> groupMessageMap;
     private HashMap<Message, User> senderMap;
     private HashMap<Group, User> adminMap;
-    private HashSet<String> userMobile;
+  //  private HashSet<String> userMobile;
+    private HashMap<String,User>userMap;
+
+    private HashMap<Integer,Message>messageMap;
     private int customGroupCount;
     private int messageId;
 
@@ -22,8 +28,73 @@ public class WhatsappRepository {
         this.groupUserMap = new HashMap<Group, List<User>>();
         this.senderMap = new HashMap<Message, User>();
         this.adminMap = new HashMap<Group, User>();
-        this.userMobile = new HashSet<>();
+        //this.userMobile = new HashSet<>();
+        this.userMap=new HashMap<>();
+        this.messageMap=new HashMap<>();
         this.customGroupCount = 0;
         this.messageId = 0;
+    }
+
+    public Optional<Boolean> ContainsMobile(String mobile) {
+          if(userMap.containsKey(mobile)){
+               return Optional.of(true);
+          }
+          return Optional.empty();
+    }
+    public void createUser(String name, String mobile) {
+        User user=new User(name,mobile);
+
+        userMap.put(mobile,user);
+    }
+
+    public Group createNewChat(List<User> users) {
+          Group newChat=new Group(users.get(1).getName(),2);
+          this.groupUserMap.put(newChat,users);
+          return newChat;
+    }
+
+    public Group createGroup(List<User> users) {
+            this.customGroupCount++;
+            String groupName="Group"+this.customGroupCount;
+            Group newGroup=new Group(groupName,users.size());
+            this.groupUserMap.put(newGroup,users);
+            this.adminMap.put(newGroup,users.get(0));
+            return newGroup;
+    }
+
+
+    public int createMessage(String content) {
+           this.messageId++;
+           Message message=new Message(this.messageId,content);
+           this.messageMap.put(this.messageId,message);
+           return this.messageId;
+    }
+
+    public Optional<List<User>> isGroupFound(Group group) {
+        if(this.groupUserMap.containsKey(group)){
+            return Optional.of(this.groupUserMap.get(group));
+        }
+        return Optional.empty();
+    }
+
+
+    public int sendMessage(Message message, User sender, Group group) {
+        List<Message>oldMessage=this.groupMessageMap.get(group);
+        oldMessage.add(message);
+        this.groupMessageMap.put(group,oldMessage);
+        this.senderMap.put(message,sender);
+        return oldMessage.size();
+    }
+
+    public Optional<Boolean> approverIsAdmin(User approver, Group group) {
+
+        if(this.adminMap.containsKey(group) && this.adminMap.get(group).equals(approver)){
+            return Optional.of(true);
+        }
+        return Optional.empty();
+    }
+
+    public void changeAdmin(User user, Group group) {
+        this.adminMap.put(group,user);
     }
 }
