@@ -35,6 +35,70 @@ public class WhatsappRepository {
         this.messageId = 0;
     }
 
+    public HashMap<Group, List<User>> getGroupUserMap() {
+        return groupUserMap;
+    }
+
+    public void setGroupUserMap(HashMap<Group, List<User>> groupUserMap) {
+        this.groupUserMap = groupUserMap;
+    }
+
+    public HashMap<Group, List<Message>> getGroupMessageMap() {
+        return groupMessageMap;
+    }
+
+    public void setGroupMessageMap(HashMap<Group, List<Message>> groupMessageMap) {
+        this.groupMessageMap = groupMessageMap;
+    }
+
+    public HashMap<Message, User> getSenderMap() {
+        return senderMap;
+    }
+
+    public void setSenderMap(HashMap<Message, User> senderMap) {
+        this.senderMap = senderMap;
+    }
+
+    public HashMap<Group, User> getAdminMap() {
+        return adminMap;
+    }
+
+    public void setAdminMap(HashMap<Group, User> adminMap) {
+        this.adminMap = adminMap;
+    }
+
+    public HashMap<String, User> getUserMap() {
+        return userMap;
+    }
+
+    public void setUserMap(HashMap<String, User> userMap) {
+        this.userMap = userMap;
+    }
+
+    public HashMap<Integer, Message> getMessageMap() {
+        return messageMap;
+    }
+
+    public void setMessageMap(HashMap<Integer, Message> messageMap) {
+        this.messageMap = messageMap;
+    }
+
+    public int getCustomGroupCount() {
+        return customGroupCount;
+    }
+
+    public void setCustomGroupCount(int customGroupCount) {
+        this.customGroupCount = customGroupCount;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
     public Optional<Boolean> ContainsMobile(String mobile) {
           if(userMap.containsKey(mobile)){
                return Optional.of(true);
