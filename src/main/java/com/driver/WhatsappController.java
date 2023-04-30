@@ -68,6 +68,7 @@ public class WhatsappController {
 
         return whatsappService.changeAdmin(approver, user, group);
     }
+
 /*
     @DeleteMapping("/remove-user")
     public int removeUser(User user) throws Exception{
@@ -90,6 +91,6 @@ public class WhatsappController {
         return whatsappService.findMessage(start, end, K);
     }
 
- */
+   */
 
 }

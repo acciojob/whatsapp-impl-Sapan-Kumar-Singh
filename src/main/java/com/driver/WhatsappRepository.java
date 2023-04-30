@@ -119,10 +119,7 @@ public class WhatsappRepository {
 
     public Group createGroup(List<User> users) {
             this.customGroupCount++;
-            String groupName="Group"+this.customGroupCount;
-            if(this.customGroupCount==1){
-                groupName="Group1";
-            }
+            String groupName="Group "+this.customGroupCount;
             Group newGroup=new Group(groupName,users.size());
             this.groupUserMap.put(newGroup,users);
             this.adminMap.put(newGroup,users.get(0));
@@ -164,4 +161,50 @@ public class WhatsappRepository {
     public void changeAdmin(User user, Group group) {
         this.adminMap.put(group,user);
     }
+
+    public Optional<Boolean> findUser(User user) {
+        if(this.userMap.containsValue(user)){
+            return Optional.of(true);
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Boolean> isAdmin(User user) {
+        if(this.adminMap.containsValue(user)){
+            return Optional.of(true);
+        }
+
+        return Optional.empty();
+    }
+
+
+    public void removeUser(User user) {
+
+
+
+        for(Group key : groupUserMap.keySet()){
+            List<User>userList=groupUserMap.get(key);
+            for(User val :userList){
+                if(val.equals(user)){
+                    userList.remove(user);
+                }
+            }
+            groupUserMap.put(key,userList);
+        }
+        for(Message key : this.senderMap.keySet()){
+            if(this.senderMap.get(key).equals(user)){
+                this.senderMap.remove(key);
+            }
+        }
+
+        for(String key : this.userMap.keySet()){
+            if(this.userMap.get(key).equals(user)){
+                this.userMap.remove(key);
+            }
+        }
+
+    }
+
+
 }
